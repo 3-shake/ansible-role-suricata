@@ -1,0 +1,62 @@
+---
+# tasks file for ansible-role-suricata
+- name: add suricata repository
+  apt_repository:
+    repo: ppa:oisf/suricata-stable
+  tags:
+    - suricata
+    - oinkmaster
+
+- name: install suricata
+  apt:
+    name: "suricata"
+    state: latest
+    update_cache: yes
+  tags:
+    - suricata
+
+- name: install oinkmaster
+  apt:
+    name: "oinkmaster"
+    state: latest
+    update_cache: yes
+  tags:
+    - oinkmaster
+
+- name: configure oinkmaster.conf
+  lineinfile:
+    path: /etc/oinkmaster.conf
+    regexp: "^url = "
+    line: "url = http://rules.emergingthreats.net/open/suricata/emerging.rules.tar.gz"
+  tags:
+    - oinkmaster
+
+- name: expand the oink rules
+  shell: oinkmaster -C /etc/oinkmaster.conf -o /etc/suricata/rules
+  tags:
+    - oinkmaster
+
+- name: configure classification-file in suricata-debian.yaml
+  lineinfile:
+    path: /etc/suricata/suricata-debian.yaml
+    regexp: "^classification-file: "
+    line: "^classification-file: /etc/suricata/classification.config"
+  tags:
+    - suricata
+
+- name: configure reference-config-file in suricata-debian.yaml
+  lineinfile:
+    path: /etc/suricata/suricata-debian.yaml
+    regexp: "^reference-config-file: "
+    line: "reference-config-file: /etc/suricata/rules/reference.config"
+  tags:
+    - suricata
+
+- name: restart and enable suricata
+  systemd:
+    name: suricata
+    enable: yes
+    state: restarted
+  tags:
+    - suricata
+    - oinkmaster
