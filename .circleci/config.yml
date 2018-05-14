@@ -1,0 +1,31 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/buildpack-deps:16.04-curl-browsers
+    steps:
+      - checkout
+      - run: echo Hello
+  test:
+    docker:
+      - image: circleci/buildpack-deps:16.04-curl-browsers
+    steps:
+      - checkout
+      - run: sudo apt -qq update
+      - run: sudo apt upgrade -y
+      - run: sudo apt install -y software-properties-common python-apt python-pycurl
+      - run: sudo apt-add-repository -y ppa:ansible/ansible
+      - run: sudo apt -qq update
+      - run: sudo apt install -y ansible
+      - run: ansible --version
+      - run: sudo mkdir -p /etc/ansible/roles/ansible-role-suricata
+      - run: sudo cp -pr * /etc/ansible/roles/ansible-role-suricata
+      - run: ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+      - run: ansible-playbook tests/test.yml -i tests/inventory -s
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test

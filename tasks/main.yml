@@ -36,17 +36,17 @@
   tags:
     - oinkmaster
 
-- name: configure classification-file in suricata-debian.yaml
+- name: configure classification-file in suricata.yaml
   lineinfile:
-    path: /etc/suricata/suricata-debian.yaml
+    path: /etc/suricata/suricata.yaml
     regexp: "^classification-file: "
     line: "^classification-file: /etc/suricata/classification.config"
   tags:
     - suricata
 
-- name: configure reference-config-file in suricata-debian.yaml
+- name: configure reference-config-file in suricata.yaml
   lineinfile:
-    path: /etc/suricata/suricata-debian.yaml
+    path: /etc/suricata/suricata.yaml
     regexp: "^reference-config-file: "
     line: "reference-config-file: /etc/suricata/rules/reference.config"
   tags:
@@ -55,7 +55,7 @@
 - name: restart and enable suricata
   systemd:
     name: suricata
-    enable: yes
+    enabled: yes
     state: restarted
   tags:
     - suricata
