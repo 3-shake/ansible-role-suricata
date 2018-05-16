@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/3-shake/ansible-role-suricata.svg?branch=master)](https://travis-ci.org/3-shake/ansible-role-suricata)
+
 Role Name
 =========
 
