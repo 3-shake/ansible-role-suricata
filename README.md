@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/3-shake/ansible-role-suricata.svg?branch=master)](https://travis-ci.org/3-shake/ansible-role-suricata)
+
 Role Name
 =========
 
@@ -25,7 +27,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - 3-shake/ansible-role-suricata
+         - 3-shake.ansible-role-suricata
 
 License
 -------
